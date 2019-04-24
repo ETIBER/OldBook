@@ -10,7 +10,7 @@ class Client:
         print("""
         Credit du client {} : {}""".format(self.nom, str(self.credit)))
 
-    def approvisionnement(self, credit):
+    def crediter(self, credit):
         self.credit += credit
 
 
@@ -42,15 +42,13 @@ class Livre:
 
 class OldBook:
 
-    def __init__(self, clients, livres):
+    def __init__(self, clients=[], livres=[]):
 
         self.livres = livres
         self.clients = clients
-        self.listelivres = []
-        self.listeclients = []
 
     def ajoutclient(self, client):
-        self.listeclients.append(input(str("Quel est le nom du nouveau client ?")), input(int("Quel est son credit ?")))
+        self.clients.append(client)
 
 
     def __lireClient(self):
@@ -154,12 +152,10 @@ def menu():
     while True:
         try:
             choix = int(input("Entrez votre choix: "))
-            if choix in range(1, 5):
-                break
+            if choix in range(1, 6):
+                return choix
         except ValueError:
             continue
-
-    return choix
 
 Jelis = Client("Jelis",0.0)
 Jebouquine = Client("Jebouquine",0.0)
@@ -170,19 +166,22 @@ Leroutard = Livre("Leroutard", 19, "GDR", "guide")
 clients = [Jelis, Jebouquine]
 livres = [NotreDamedeParis, Leroutard]
 
-ob = OldBook(clients,livres)
+oldBook = OldBook(clients, livres)
 while True:
 
     choix = menu()
 
     if choix == 1:
-        ob.approvisionnement()
+        oldBook.approvisionnement()
     elif choix == 2:
-        ob.ajoutclient()
+        clientName = str(input("Quel est le nom du nouveau client ?"))
+        clientCredit = int(input("Quel est son credit ?"))
+        client = Client(clientName, clientCredit)
+        oldBook.ajoutclient(client)
     elif choix == 3:
-        ob.affichage()
+        oldBook.affichage()
     elif choix == 4:
-        ob.achat()
+        oldBook.achat()
     elif choix == 5:
         quitter()
     else:
